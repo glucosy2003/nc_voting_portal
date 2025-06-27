@@ -1,12 +1,20 @@
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-u4&#yzu(+(^v3mnl)#f0e5f@*26yt!k11-mvz7u_nfd!&%cyh@'
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = os.environ.get('DEBUG') == 'True'
 
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['nc-voting-portal.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -19,6 +27,8 @@ INSTALLED_APPS = [
     'vote.apps.VoteConfig',
     'widget_tweaks',
     'customadmin',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -99,5 +109,10 @@ LOGIN_REDIRECT_URL = '/login/dashboard/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-AFRICASTALKING_USERNAME = "sandbox"
-AFRICASTALKING_API_KEY = "atsk_db83a8fee4885b0af300a6372b4bfee7de7a1f0cca3c3b0e50c8a97bf5914a9a2aa0674bour_api_key"
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUD_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUD_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
