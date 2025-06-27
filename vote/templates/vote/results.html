@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>Election Results | NC Voting Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Shared CSS -->
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <script src="{% static 'js/dashboard.js' %}" defer></script>
+  
+  <!-- Results-specific styles -->
+  <link rel="stylesheet" href="{% static 'css/results.css' %}">
+
+  <!-- Theme toggle -->
+  <script defer src="{% static 'js/theme.js' %}"></script>
+  <script defer src="{% static 'js/results.js' %}"></script>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <img src="{% static 'images/daeyang.logo.png' %}" alt="Daeyang University Logo" />
+  </div>
+  <div class="header-info">
+    <h1>NC Voting Portal</h1>
+    <h2>Election Results</h2>
+  </div>
+</header>
+
+<audio id="votingSong" loop>
+    <source src="{% static 'audio/voting_song.mp3' %}" type="audio/mpeg">
+</audio>
+
+
+<nav class="nav-bar" id="navbar">
+  <div class="nav-left">
+    <a href="javascript:history.back()" class="nav-link">← Back</a>
+  </div>
+  <label class="theme-switch">
+    <label class="theme-switch"> <input type="checkbox" id="themeToggle" onchange="toggleTheme()"> Dark Mode</label>
+  </label>
+</nav>
+
+<main class="results-main container">
+  {% if voting_ended %}
+    <p class="alert alert-success text-center">
+      🏁 Voting has ended. Final results are below.
+    </p>
+
+    {% for position, candidate_list in results.items %}
+      <section class="position-results">
+        <h3>{{ position }}</h3>
+        <div class="results-grid">
+          {% for cand in candidate_list %}
+            <div class="result-card">
+              <img src="{{ cand.photo_url }}" alt="Photo of {{ cand.name }}" class="result-photo">
+              <div class="result-info">
+                <strong class="result-name">{{ cand.name }}</strong>
+                <span class="result-votes">{{ cand.votes }} votes</span>
+                <div class="progress">
+                  <div class="progress-bar" style="width: {{ cand.percentage }}%">
+                    {{ cand.percentage }}%
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+
+  {% else %}
+    <p class="alert alert-warning text-center">
+      ⏳ Voting is still in progress. Come back once it ends to see results.
+    </p>
+  {% endif %}
+</main>
+
+</body>
+</html>

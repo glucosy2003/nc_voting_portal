@@ -1,0 +1,33 @@
+{% load static %}
+<!-- Header -->
+<header class="header">
+  <div class="logo">
+    <img src="{% static 'images/logo.png' %}" alt="Daeyang University Logo" />
+  </div>
+  <div class="header-info">
+    <h1>NC Voting Admin Portal</h1>
+    <h2>Daeyang Students Council Elections - Admin</h2>
+  </div>
+  <div class="header-actions">
+    <label class="theme-switch">
+      <input type="checkbox" id="themeToggle" onchange="toggleTheme()" />
+      <span>Dark Mode</span>
+    </label>
+  </div>
+</header>
+
+<!-- Navbar -->
+<nav class="nav-bar" id="navbar">
+  <div class="nav-left">
+    <a href="{% url 'customadmin:admin_dashboard' %}" class="nav-link {% if request.path == '/admin/dashboard/' %}active{% endif %}">Dashboard</a>
+    <a href="{% url 'customadmin:manage_candidates' %}" class="nav-link {% if request.path == '/admin/candidates/' %}active{% endif %}">Candidates</a>
+    <a href="{% url 'customadmin:registered_voters' %}" class="nav-link {% if request.path == '/admin/registered-voters/' %}active{% endif %}">Voters</a>
+    <a href="{% url 'customadmin:list_valid_students' %}" class="nav-link {% if request.path == '/admin/valid-students/' %}active{% endif %}">Valid Students</a>
+    <a href="{% url 'customadmin:countdown_timer_control' %}" class="nav-link {% if request.path == '/admin/countdown/' %}active{% endif %}">Countdown Timers</a>
+    <a href="{% url 'customadmin:view_results' %}" class="nav-link {% if request.path == '/admin/results/' %}active{% endif %}">Results</a>
+  </div>
+  <div class="nav-right">
+    <a href="{% url 'customadmin:admin_logout' %}" class="nav-link logout-link">Logout</a>
+  </div>
+
+</nav>

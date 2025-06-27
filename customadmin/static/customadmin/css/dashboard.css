@@ -1,0 +1,158 @@
+/* ==== Greeting and Headings ==== */
+.greeting {
+  font-size: 1.25rem;
+  margin: 0 1.5rem 2rem;
+}
+
+.section-heading {
+  margin-left: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* ==== Dashboard Cards ==== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 0 1.5rem 2rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.card-title {
+  font-weight: 600;
+  color: var(--main-text);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.card-link {
+  font-weight: 700;
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.card-link:hover {
+  color: var(--link-color-hover);
+}
+
+/* ==== Logout Button (Only for standalone dashboard logout) ==== */
+.logout {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.btn-logout {
+  background-color: #c1535e;
+  color: white;
+  font-weight: 700;
+  padding: 0.6rem 1.5rem;
+  border-radius: 30px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #a71d2a;
+}
+
+
+
+/* 🌙 Sidebar Base */
+.sidebar-wrapper {
+    position: relative;
+}
+
+/* ☰ Hamburger Icon */
+.hamburger-btn {
+    font-size: 1.8rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    position: fixed;
+    top: 60px;            /* ✅ lower down from 15px */
+    left: 20px;           /* ✅ add spacing from edge */
+    z-index: 2000;        /* ✅ ensure it's above logo */
+}
+
+
+/* 📦 Sidebar Panel */
+.sidebar-panel {
+    position: fixed;
+    top: 0;
+    left: -280px; /* hidden by default */
+    width: 260px;
+    height: 100%;
+    background: rgba(32, 34, 70, 0.697);
+    color: white;
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 1003;
+    backdrop-filter: blur(5px);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.sidebar-panel.active {
+    left: 0;
+}
+
+/* ❌ Close Button */
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+}
+
+/* 📎 Sidebar Links */
+.sidebar-links {
+    list-style: none;
+    margin-top: 60px;
+    padding-left: 0;
+}
+
+.sidebar-links li {
+    margin: 15px 0;
+}
+
+.sidebar-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+
+.sidebar-links a:hover {
+    color: #f0a500;
+}
+
+/* 🧊 Transparent Backdrop */
+#sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(53, 81, 134, 0.299);
+    z-index: 1001;
+    display: none;
+}
+#sidebar-backdrop.active {
+    display: block;
+}

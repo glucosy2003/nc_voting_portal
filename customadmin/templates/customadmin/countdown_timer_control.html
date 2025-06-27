@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>Countdown Timers | NC Voting Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{% static 'customadmin/css/global.css' %}">
+  <script src="{% static 'customadmin/js/global.js' %}" defer></script>
+  <link rel="stylesheet" href="{% static 'customadmin/css/countdown.css' %}">
+  <script src="{% static 'customadmin/js/countdown.js' %}" defer></script>
+</head>
+<body>
+  {% include "customadmin/partials/header_nav.html" %}
+
+  <main class="container">
+
+    <h2>🕒 Countdown Timer Control</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" class="timer-form">
+      {% csrf_token %}
+
+      <!-- Application Timer -->
+      <section class="timer-card">
+        <h3>📝 Application Timer</h3>
+        <label>Start Time:</label>
+        <input type="datetime-local" name="application_start" required
+               value="{% if timers.application %}{{ timers.application.start_time|date:'Y-m-d\\TH:i' }}{% endif %}">
+        <label>End Time:</label>
+        <input type="datetime-local" name="application_end" required
+               value="{% if timers.application %}{{ timers.application.end_time|date:'Y-m-d\\TH:i' }}{% endif %}">
+      </section>
+
+      <!-- Voting Timer -->
+      <section class="timer-card">
+        <h3>🗳️ Voting Timer</h3>
+        <label>Start Time:</label>
+        <input type="datetime-local" name="voting_start" required
+               value="{% if timers.voting %}{{ timers.voting.start_time|date:'Y-m-d\\TH:i' }}{% endif %}">
+        <label>End Time:</label>
+        <input type="datetime-local" name="voting_end" required
+               value="{% if timers.voting %}{{ timers.voting.end_time|date:'Y-m-d\\TH:i' }}{% endif %}">
+      </section>
+
+      <button type="submit" class="btn-submit">💾 Save Timers</button>
+    </form>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'customadmin/css/manage_candidates.css' %}" />
+    <link rel="stylesheet" href="{% static 'customadmin/js/manage_candidates.js' %}" />
+    <link rel="stylesheet" href="{% static 'customadmin/css/global.css' %}">
+    <script defer src="{% static 'customadmin/js/global.js' %}"></script>
+</head>
+<body>
+{% include "customadmin/partials/header_nav.html" %}
+
+
+<div class="container">
+    <h2>Manage Candidates</h2>
+
+    <!-- Search Bar -->
+    <form method="get" class="search-bar">
+        <input type="text" name="q" placeholder="Search by name or ID" value="{{ search_query }}">
+        <input type="hidden" name="status" value="{{ filter_status }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Grouped Candidates by Position -->
+    {% for position, candidates in grouped_candidates.items %}
+    <div class="position-section">
+        <div class="position-title">{{ position }}</div>
+
+        {% if candidates %}
+            {% for candidate in candidates %}
+            <div class="candidate-card">
+                {% if candidate.photo %}
+                    <img src="{{ candidate.photo.url }}" alt="Candidate Photo" class="candidate-photo">
+                {% else %}
+                    <img src="{% static 'customadmin/default-user.png' %}" alt="Default Photo" class="candidate-photo">
+                {% endif %}
+                <div class="candidate-info">
+                    <p><strong>Name:</strong> {{ candidate.valid_student.full_name }}</p>
+                    <p><strong>Student ID:</strong> {{ candidate.valid_student.student_id }}</p>
+                    <p><strong>Program:</strong> {{ candidate.valid_student.program }}</p>
+                    <p><strong>Position:</strong> {{ candidate.position }}</p>
+                    <p><strong>Manifesto:</strong> {{ candidate.manifesto }}</p>
+
+                    {% if candidate.approved is not None %}
+                        {% if candidate.approved %}
+                            <span class="status-badge approved">Approved</span>
+                        {% else %}
+                            <span class="status-badge rejected">Rejected</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="status-badge pending">Pending</span>
+                    {% endif %}
+                </div>
+
+                <div class="actions">
+                    {% if candidate.approved is None %}
+                        <form method="POST" action="{% url 'customadmin:approve_candidate' candidate.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="approve-btn">Approve</button>
+                        </form>
+
+                        <form method="POST" action="{% url 'customadmin:reject_candidate' candidate.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="reject-btn">Reject</button>
+                        </form>
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'customadmin:delete_candidate' candidate.id %}"
+                          onsubmit="return confirmDelete({{ candidate.approved|yesno:'true,false,null' }})"
+                          style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No candidates submitted yet for {{ position }}.</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<script src="{% static 'customadmin/js/manage_candidates.js' %}" defer></script>
+</body>
+</html>

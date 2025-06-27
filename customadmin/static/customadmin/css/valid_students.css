@@ -1,0 +1,124 @@
+body {
+  background-color: var(--container-bg);
+  color: var(--main-text);
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.search-bar form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.search-bar input[type="text"] {
+    padding: 6px;
+    border-radius: 8px;
+    width: 250px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--main-text);
+}
+
+.search-bar button {
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: var(--btn-primary);
+    color: var(--container-bg);
+    border: none;
+    font-weight: bold;
+}
+
+/* Add Student Button */
+.add-student-button {
+    background-color: var(--link-color, orange);
+    color: var(--container-bg);
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.add-student-button:hover {
+    opacity: 0.9;
+}
+
+/* Delete Button Visibility */
+.btn-danger {
+    background-color: var(--btn-danger, #b22222);
+    color: var(--container-bg);
+    padding: 6px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  color: var(--main-text);
+}
+
+th {
+  background-color: var(--btn-secondary);
+  color: var(--container-bg);
+  text-align: left;
+}
+
+tr:nth-child(even) td {
+  background-color: var(--row-alt-bg);
+}
+
+tr:hover td {
+  background-color: var(--btn-secondary);
+  color: var(--container-bg);
+  transition: background-color 0.3s ease;
+}
+
+.program-title {
+  background-color: var(--btn-secondary);
+  color: var(--container-bg);
+  font-weight: bold;
+  padding: 6px 12px;
+}
+
+
+
+/* No Results */
+.no-results {
+  text-align: center;
+  color: var(--btn-secondary);
+  font-weight: bold;
+  padding: 20px;
+}

@@ -1,0 +1,88 @@
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--container-bg);
+  color: var(--main-text);
+}
+
+.container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: var(--main-text);
+}
+
+.refresh-note {
+  font-size: 0.85rem;
+  text-align: right;
+  color: var(--btn-secondary);
+  margin-bottom: 10px;
+}
+
+.btn-download {
+  display: inline-block;
+  background: rgb(82, 150, 100);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.position-section {
+  margin-bottom: 40px;
+}
+
+.position-title {
+  font-size: 1.3rem;
+  color: var(--btn-primary);
+  border-left: 4px solid var(--btn-primary);
+  padding-left: 10px;
+  margin-bottom: 12px;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--card-bg);
+  color: var(--main-text);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--btn-secondary);
+  color: var(--container-bg);
+  text-align: left;
+}
+
+td {
+  background-color: var(--bg-color);
+}
+
+tr:nth-child(even) td {
+  background-color: var(--row-alt-bg);
+}
+
+tr:hover td {
+  background-color: var(--btn-secondary);
+  color: var(--container-bg);
+  transition: background-color 0.3s ease;
+}
+
+.no-results {
+  color: var(--btn-secondary);
+  font-style: italic;
+}

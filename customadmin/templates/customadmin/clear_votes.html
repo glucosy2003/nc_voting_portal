@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Clear Votes | NC Voting Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global Styles & Scripts -->
+    <link rel="stylesheet" href="{% static 'customadmin/css/global.css' %}">
+    <script defer src="{% static 'customadmin/js/global.js' %}"></script>
+
+    <!-- Optional: Page-specific styles -->
+    <style>
+        body {
+            background-color: var(--container-bg);
+            color: var(--text);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .clear-votes-wrapper {
+            max-width: 500px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--danger, #dc3545);
+            text-align: center;
+        }
+
+        .clear-votes-wrapper h2 {
+            color: var(--danger, #dc3545);
+            margin-bottom: 20px;
+        }
+
+        .clear-votes-wrapper p {
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-danger {
+            background-color: var(--danger, #dc3545);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #a61b1b;
+        }
+
+        .btn-secondary {
+            background-color: var(--btn-login, #e56b00);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #b75600;
+        }
+
+        @media (max-width: 500px) {
+            .clear-votes-wrapper {
+                margin: 40px 15px;
+                padding: 20px 15px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+{% include "customadmin/partials/header_nav.html" %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="clear-votes-wrapper">
+    <h2>⚠️ Clear All Votes</h2>
+    <p>This action will <strong>permanently delete all votes</strong> from the system. Are you absolutely sure?</p>
+
+    <form method="POST" action="{% url 'customadmin:clear_votes' %}" onsubmit="return confirmClearVotes();">
+        {% csrf_token %}
+        <div class="action-buttons">
+            <button type="submit" class="btn btn-danger">Yes, Clear All</button>
+            <a href="{% url 'customadmin:admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function confirmClearVotes() {
+        return confirm("⚠️ Are you sure you want to delete ALL votes? This cannot be undone.");
+    }
+</script>
+
+</body>
+</html>

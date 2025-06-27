@@ -1,0 +1,61 @@
+/* ===============================
+   ROOT THEME VARIABLES
+   =============================== */
+:root {
+    --primary: #f97316;
+    --background: #f9f9f9;
+    --text: #1f2937;
+    --card-bg: #fff;
+    --danger: #ef4444;
+    --success: #10b981;
+}
+
+[data-theme="dark"] {
+    --background: #111827;
+    --text: #f9f9f9;
+    --card-bg: #1f2937;
+    --footer-bg: #2a2a2a;
+    --footer-text: #ccc;
+  
+
+ 
+}
+
+.theme-switch {
+    font-size: 0.9rem;
+}
+
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+}
+
+
+/* Optional override for card */
+.card, .about-card, .candidate-card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+
+
+.theme-switch input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-color); /* Works on modern browsers */
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 15px 0;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}

@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | NC Voting Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'customadmin/css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'customadmin/css/global.css' %}">
+    <script defer src="{% static 'customadmin/js/global.js' %}"></script>
+    <script defer src="{% static 'customadmin/js/dashboard.js' %}"></script>
+    
+</head>
+<body>
+
+    <!-- 🌟 HAMBURGER + SIDEBAR WRAPPER -->
+<div class="sidebar-wrapper">
+
+    <!-- 🔘 Hamburger Button -->
+    <button id="hamburger-toggle" class="hamburger-btn">
+        ☰
+    </button>
+
+    <!-- 📦 Sidebar Panel -->
+    <div id="admin-sidebar" class="sidebar-panel">
+        <div class="sidebar-header">
+            <h3>Admin Menu</h3>
+            <button id="close-sidebar" class="close-btn">&times;</button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="{% url 'customadmin:change_admin_password' %}">Change Password</a></li>
+            <li><a href="{% url 'customadmin:clear_votes' %}" class="sidebar-link text-danger">Clear Votes</a></li>
+            <li><a href="{% url 'customadmin:admin_logout' %}" class="nav-link logout-link">Logout</a></li>
+        </ul>
+
+    </div>
+
+    <!-- 🧊 Backdrop -->
+    <div id="sidebar-backdrop"></div>
+</div>
+
+  {% include "customadmin/partials/header_nav.html" %}
+  
+
+  <!-- Messages -->
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+    <!-- Greeting -->
+  <div class="greeting">
+      Welcome, <strong>{{ request.user.username }}</strong> 👋
+  </div>
+
+<div class="countdown-timers" style="margin: 1rem 1.5rem;">
+  <h3 class="section-heading">⏳ Active Countdowns</h3>
+  <div class="cards">
+    <div class="card">
+      <div class="card-title">Application Countdown</div>
+      <div id="adminAppCountdown">Loading...</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Voting Countdown</div>
+      <div id="adminVoteCountdown">Loading...</div>
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- Statistics Section -->
+  <h4 class="section-heading">📊 Statistics Overview</h4>
+  <div class="cards">
+      <div class="card">
+          <div class="card-title">Total Candidates</div>
+          <h3>{{ total_candidates }}</h3>
+      </div>
+      <div class="card">
+          <div class="card-title">Approved Candidates</div>
+          <h3>{{ approved_candidates }}</h3>
+      </div>
+      <div class="card">
+          <div class="card-title">Pending Candidates</div>
+          <h3>{{ pending_candidates }}</h3>
+      </div>
+      <div class="card">
+          <div class="card-title">Rejected Candidates</div>
+          <h3>{{ rejected_candidates }}</h3>
+      </div>
+      <div class="card">
+          <div class="card-title">Total Students</div>
+          <h3>{{ total_voters }}</h3>
+      </div>
+      <div class="card">
+          <div class="card-title">Votes Cast</div>
+          <h3>{{ total_votes }}</h3>
+      </div>
+      <div class="card">
+          <div class="card-title">Distinct Voters</div>
+          <h3>{{ distinct_voters }}</h3>
+      </div>
+      <div class="card">
+          <div class="card-title">Positions Contested</div>
+          <h3>{{ positions_count }}</h3>
+      </div>
+  </div>
+
+  <!-- Quick Actions Section -->
+  <h4 class="section-heading">🔗 Quick Actions</h4>
+  <div class="cards">
+      <div class="card">
+          <div class="card-title">Manage Candidates</div>
+          <a href="{% url 'customadmin:manage_candidates' %}" class="card-link">View & Approve</a>
+      </div>
+      <div class="card">
+          <div class="card-title">Registered Voters</div>
+          <a href="{% url 'customadmin:registered_voters' %}" class="card-link">View Voter</a>
+      </div>
+      <div class="card">
+          <div class="card-title">Manage Valid Students</div>
+          <a href="{% url 'customadmin:list_valid_students' %}" class="card-link">View & Add</a>
+      </div>
+      <div class="card">
+          <div class="card-title">Countdown Timers</div>
+          <a href="{% url 'customadmin:countdown_timer_control' %}" class="card-link">Manage Timers</a>
+      </div>
+      <div class="card">
+          <div class="card-title">Votes Summary</div>
+          <a href="{% url 'customadmin:view_results' %}" class="card-link">View Results</a>
+      </div>
+  </div>
+
+  <!-- Logout -->
+  <div class="logout">
+      <a href="{% url 'customadmin:admin_logout' %}" class="btn-logout">Logout</a>
+  </div>
+
+  <!-- JS -->
+  <script src="{% static 'customadmin/js/dashboard.js' %}" defer></script>
+  <script>
+  let appLeft = {{ app_remaining|default:0 }};
+  let voteLeft = {{ vote_remaining|default:0 }};
+
+  function showCountdown(id, seconds) {
+    const el = document.getElementById(id);
+    function update() {
+      if (seconds <= 0) {
+        el.textContent = "⛔ Time's up!";
+        return;
+      }
+      let d = Math.floor(seconds / (3600 * 24));
+      let h = Math.floor((seconds % (3600 * 24)) / 3600);
+      let m = Math.floor((seconds % 3600) / 60);
+      let s = seconds % 60;
+      el.textContent = `${d}d ${h}h ${m}m ${s}s`;
+      seconds--;
+      setTimeout(update, 1000);
+    }
+    update();
+  }
+
+  showCountdown('adminAppCountdown', appLeft);
+  showCountdown('adminVoteCountdown', voteLeft);
+
+
+  function confirmClearVotes() {
+      return confirm("⚠️ Are you sure you want to permanently delete all votes? This cannot be undone.");
+  }
+
+
+</script>
+
+</body>
+</html>

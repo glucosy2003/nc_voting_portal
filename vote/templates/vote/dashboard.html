@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>    
+    <meta charset="UTF-8">
+    <title>Voting Dashboard - NC Voting Portal</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'js/dashboard.js' %}" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}" />
+    <script defer src="{% static 'js/theme.js' %}"></script>
+</head>
+<body>
+
+{% if messages %}
+  <div>
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<header class="header">
+    <div class="logo">
+        <img src="{% static 'images/daeyang.logo.png' %}" alt="Daeyang University Logo" />
+    </div>
+    <div class="header-info">
+        <h1>NC Voting Portal</h1>
+        <h2>2025 Daeyang Students Council Elections</h2>
+    </div>
+    <div class="header-actions">
+        {% if voting_status == 'open' %}
+            <span class="timer">🗳️ Voting Time Left: <span id="countdown">--:--:--</span></span>
+        {% elif voting_status == 'not_started' %}
+            <span class="timer text-muted">🗳️ Voting Opens at {{ voting_timer.start_time|date:"M d, Y H:i" }}</span>
+        {% else %}
+            <span class="timer text-muted">🗳️ Voting Closed</span>
+        {% endif %}
+
+        {% if application_status == 'open' %}
+            <span class="timer">📝 Application Time Left: <span id="applicationCountdown">--:--:--</span></span>
+        {% elif application_status == 'not_started' %}
+            <span class="timer text-muted">📝 Applications Open at {{ application_timer.start_time|date:"M d, Y H:i" }}</span>
+        {% endif %}
+
+        <label class="theme-switch"> <input type="checkbox" id="themeToggle" onchange="toggleTheme()"> Dark Mode</label>
+    </div>
+</header>
+
+<audio id="votingSong" loop>
+    <source src="{% static 'audio/voting_song.mp3' %}" type="audio/mpeg">
+</audio>
+
+<nav class="nav-bar" id="navbar">    
+  <div class="nav-left">
+    <a href="{% url 'home' %}" class="nav-link">Home</a>
+    <a href="{% url 'about' %}" class="nav-link">About</a>
+    <a href="{% url 'results' %}" class="nav-link">Results</a>
+    <button onclick="toggleAudio()" class="nav-button" id="audioToggle">▶️ Play Voting Song</button>
+  </div>
+  <div class="nav-right">
+    <button onclick="window.location.href='{% url 'apply' %}'" class="nav-button">📝 Apply for Candidate</button>
+    <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+
+</nav>
+
+<main>
+    <section class="stats">
+        <p><strong>Total Students:</strong> {{ stats.total_students }}</p>
+        <p><strong>Total Registered Voters:</strong> {{ stats.total_voters }}</p>
+        <p><strong>Total Votes Cast:</strong> {{ stats.votes_cast }}</p>
+        <p><strong>Voting Progress:</strong> {{ stats.voting_percentage }}%</p>
+    </section>
+
+    {% if voting_status == 'open' %}
+    <section class="live-progress-bar">
+        <p><strong>Your Voting Bar</strong></p>
+        <div class="progress-container">
+            <div id="votingProgressBar" class="progress-fill" style="width: 0%;"></div>
+        </div>
+        <p id="votingProgressText">0% completed</p>
+    </section>
+    {% endif %}
+
+
+    {% if voting_status == 'not_started' %}
+        <div class="alert alert-info">
+          ⏱️ Voting opens at {{ voting_timer.start_time|date:"M d, Y H:i" }}.
+        </div>
+    {% elif voting_status == 'closed' %}
+        <div class="alert alert-danger">
+          🚫 Voting closed. It was open from {{ voting_timer.start_time|date:"M d, Y H:i" }} to {{ voting_timer.end_time|date:"M d, Y H:i" }}.
+        </div>
+    {% endif %}
+
+    {% for position_title, candidates_list in positions.items %}
+    <section class="position-section">
+        <h3 class="position-title">{{ position_title }}</h3>
+
+        <div class="scrollable-wrapper">
+            <button class="scroll-btn left" onclick="scrollLeft(this)" aria-label="Scroll left">◀</button>
+
+            <div class="candidates-container scrollable-cards">
+                {% for c in candidates_list %}
+                <div class="candidate-card">
+                    <div class="card-inner" onclick="flipCard(this)">
+                        <div class="card-front">
+                            <h4>{{ c.valid_student.full_name }}</h4>
+                            {% if c.photo %}
+                                <img src="{{ c.photo.url }}" alt="Photo of {{ c.valid_student.full_name }}" class="candidate-photo">
+                            {% else %}
+                               <img src="{% static 'images/default_candidate.png' %}" alt="Default candidate photo" class="candidate-photo">
+                            {% endif %}
+                        </div>
+                        <div class="card-back">
+                            <div class="manifesto-container">
+                                <p class="manifesto-text">{{ c.manifesto }}</p>
+                                <div class="fade-overlay"></div>
+                            </div>
+                            <div class="manifesto-toggle-wrapper">
+                                <button class="toggle-manifesto" onclick="toggleManifesto(this)">See more</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results-bar">
+                        <div class="results-bar-inner" style="width: {{ c.vote_percentage }}%;"></div>
+                    </div>
+
+                    {% if position_title not in voted_positions %}
+                        {% if voting_status == 'open' %}
+                            <form action="{% url 'vote' c.id %}" method="post" onsubmit="return confirmVote()">
+                                {% csrf_token %}
+                                <button type="submit" class="btn vote-btn">Vote</button>
+                            </form>
+                        {% else %}
+                            <p class="voted-label">🕓 Voting not open</p>
+                        {% endif %}
+                    {% else %}
+                        <p class="voted-label">🗳️ You already voted here.</p>
+                    {% endif %}
+                </div>
+               {% endfor %}
+            </div>
+
+            <button class="scroll-btn right" onclick="scrollRight(this)" aria-label="Scroll right">▶</button>
+        </div>
+
+    </section>
+    {% endfor %}
+</main>
+
+<script>    
+    const votingStatus = "{{ voting_status }}";
+    const votingTimeRemaining = {{ time_remaining }};
+    const applicationStatus = "{{ application_status }}";
+    const applicationTimeRemaining = {{ application_time_remaining }};
+    const totalPositions = {{ positions|length }};
+    const votedCount = {{ voted_positions|length }};
+    const hasShownPopup = sessionStorage.getItem("votingPopupShown");
+
+    if (votingStatus === 'open') {
+        const percentage = Math.round((votedCount / totalPositions) * 100);
+        const bar = document.getElementById("votingProgressBar");
+        const text = document.getElementById("votingProgressText");
+
+        if (bar && text) {
+            bar.style.width = percentage + "%";
+            text.textContent = percentage + "% completed";
+
+            // Only show SweetAlert once per session
+            if (!hasShownPopup) {
+                if (percentage === 100) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thank You! 🎉',
+                        text: 'You have completed voting for all positions.',
+                        confirmButtonText: 'OK'
+                    });
+                    sessionStorage.setItem("votingPopupShown", "complete");
+                } else {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Complete Your Vote 🗳️',
+                        text: 'You have not finished voting. Please complete all positions before deadline.',
+                        confirmButtonText: 'Continue'
+                    });
+                    sessionStorage.setItem("votingPopupShown", "reminder");
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

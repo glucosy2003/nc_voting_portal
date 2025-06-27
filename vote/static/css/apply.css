@@ -1,0 +1,19 @@
+body {
+  background-color: #f9f9f9;
+}
+
+h2 {
+  color: #d2691e;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-weight: 500;
+}
+/* Dropdown fix for dark mode */
+html[data-theme='dark'] select {
+  background-color: #1f2937;
+  color: #ffffff;
+  border: 1px solid #555;
+}

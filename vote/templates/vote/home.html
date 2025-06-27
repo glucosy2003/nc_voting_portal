@@ -1,0 +1,61 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <title>NC Voting Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}" />
+    <script defer src="{% static 'js/theme.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+
+</head>
+<body>
+  <div class="page-wrapper d-flex flex-column min-vh-100">
+    <header class="header">
+        <div class="logo">
+            <img src="{% static 'images/daeyang.logo.png' %}" alt="Daeyang University Logo" />
+        </div>
+        <div class="header-info">
+            <h1>NC Voting Portal</h1>
+          
+            
+        </div>
+        <div class="header-actions">
+            <label class="theme-switch"> <input type="checkbox" id="themeToggle" onchange="toggleTheme()"> Dark Mode</label>
+        </div>
+    </header>
+
+    <nav class="nav-bar" id="navbar">    
+        <div class="nav-left">
+            <a href="{% url 'home' %}" class="nav-link">Home</a>
+            <a href="{% url 'about' %}" class="nav-link">About</a>
+            <a href="{% url 'help_page' %}" class="nav-link">Help</a>
+
+        </div>
+    </nav>
+    <div class="container text-center mt-5">
+        <h1 class="portal-header">Welcome to NC Voting Portal</h1>
+        <p class="portal-subtitle">Empowering Daeyang University Nursing Students Through Technology</p>
+
+        <div class="button-group d-flex justify-content-center flex-wrap">
+            <a href="{% url 'login' %}" class="btn btn-login btn-lg me-3 mb-3">Login to Vote</a>
+            <a href="{% url 'voter_register' %}" class="btn btn-register btn-lg mb-3">Register to Vote</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto">     
+        <div class="container text-center">
+            <p>© 2025 NC Voting Portal | Powered by Daeyang University Nursing Students</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>About | NC Voting Portal</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="{% static 'js/about.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+    <script defer src="{% static 'js/theme.js' %}"></script>
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">
+        <img src="{% static 'images/daeyang.logo.png' %}" alt="Daeyang University Logo" />
+    </div>
+    <div class="header-info">
+        <h1>NC Voting Portal</h1>
+        <h2>About NC Voting Portal</h2>
+    </div>
+</header>
+
+<nav class="nav-bar" id="navbar">
+    <div class="nav-left">
+       <a href="javascript:history.back()" class="nav-link">← Back</a>
+    </div>
+    <label class="theme-switch"> 
+      <label class="theme-switch"> <input type="checkbox" id="themeToggle" onchange="toggleTheme()"> Dark Mode</label>
+    </label>
+
+</nav>
+
+<main class="content about-main">
+    <section class="about-grid">
+        <div class="about-card fade-in">
+            <h2>What is NC Voting Portal?</h2>
+            <p>
+                The <strong>NC Voting Portal</strong> (<strong>Nurses' Challenge</strong>) is a secure, transparent, and student-centered online voting system developed specifically for <strong>Daeyang University students council elections</strong>. It enables real-time elections with accountability and convenience.
+            </p>
+        </div>
+
+        <div class="about-card fade-in">
+            <h2>Why “Nurses’ Challenge”?</h2>
+            <p>
+                The name represents a bold step: nurses challenging the norm, embracing technology, and showing leadership beyond the hospital. It encourages every nurse to explore innovation and think outside the box.
+            </p>
+        </div>
+
+        <div class="about-card fade-in">
+            <h2>Built by a Student Nurse</h2>
+            <p>
+                Created by a passionate <strong>student nurse</strong> with no formal ICT background, this project was built using self-learning through <strong>YouTube, ChatGPT, online documentation, and support from ICT students</strong>. It proves that dedication and curiosity are more powerful than limitations.
+            </p>
+        </div>
+
+        <div class="about-card fade-in">
+            <h2>Transparency, Security & Simplicity</h2>
+            <ul>
+                <li><strong>🔒 Secure:</strong> Only verified students can vote once.</li>
+                <li><strong>👁️ Transparent:</strong> Real-time visible results and vote counts.</li>
+                <li><strong>📱 Simple:</strong> Friendly, mobile-first design for everyone.</li>
+            </ul>
+        </div>
+
+        <div class="about-card fade-in">
+            <h2>Vision & Impact</h2>
+            <p>
+                This system aims to inspire collaboration between Nursing and ICT students and encourage personal growth through innovation. It stands as a <strong>student-led revolution</strong> in using digital tools to improve institutional activities.
+            </p>
+        </div>
+
+        <div class="about-card fade-in">
+            <h2>To All Students...</h2>
+            <p>
+                You don’t need to be a formal professional to innovate. You need willingness to learn. Let NC Voting Portal inspire you to discover your potential. Nurses, ICT, BBA students, and anyone at Daeyang — this is your call to CHALLENGE TECHNOLOGY.
+            </p>
+            <p style="text-align:center; font-style:italic; margin-top:1rem;">
+                “If a nurse can code, you can too.”<br>
+            </p>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>

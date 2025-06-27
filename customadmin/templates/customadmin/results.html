@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>Election Results | NC Voting Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'customadmin/css/results.css' %}">
+  <script src="{% static 'customadmin/js/results.js' %}" defer></script>
+  <link rel="stylesheet" href="{% static 'customadmin/css/global.css' %}">
+  <script defer src="{% static 'customadmin/js/global.js' %}"></script>
+  
+</head>
+<body>
+  {% include "customadmin/partials/header_nav.html" %}
+
+<!-- Results Content -->
+<div class="container">
+  <h2>🗳️ Election Results</h2>
+  <div class="refresh-note">Auto-refresh every 15 seconds</div>
+  <a href="?download=csv" class="btn-download">⬇️ Download CSV</a>
+
+  {% for position, entries in results.items %}
+    <div class="position-section">
+      <div class="position-title">{{ position }}</div>
+      {% if entries %}
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Candidate</th>
+              <th>Votes</th>
+              <th>%</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in entries %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ entry.candidate.valid_student.full_name }}</td>
+                <td>{{ entry.count }}</td>
+                <td>{{ entry.percentage }}%</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="no-results">No candidates for this position.</p>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+</body>
+</html>
