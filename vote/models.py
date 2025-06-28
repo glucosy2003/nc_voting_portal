@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 
 # ========================
 # Program Choices Constant
@@ -56,7 +57,13 @@ class Candidate(models.Model):
     valid_student = models.OneToOneField(ValidStudent, on_delete=models.CASCADE, related_name='candidate')
     position = models.CharField(max_length=100, verbose_name="Position")
     manifesto = models.TextField(verbose_name="Manifesto")
-    photo = models.ImageField(upload_to='candidate_photos/%Y/%m/', verbose_name="Candidate Photo")
+
+    # ✅ FIXED FIELD:
+    photo = CloudinaryField(
+        resource_type='image',
+        verbose_name="Candidate Photo"
+    )
+
     approved = models.BooleanField(null=True, default=None, verbose_name="Approval Status")
     submitted_at = models.DateTimeField(auto_now_add=True)
 
