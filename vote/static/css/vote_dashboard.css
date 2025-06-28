@@ -125,6 +125,13 @@ html[data-theme="dark"] .logo img {
     position: relative;
     height: 330px;
 }
+.candidate-card {
+    flex: 0 0 auto;
+    min-width: 240px;
+    max-width: 280px;
+    width: 100%;
+}
+
 
 .card-inner {
     transition: transform 0.6s;
@@ -556,7 +563,9 @@ html[data-theme="dark"] .logo img {
 
 /* Optional: Better look on mobile */
 @media (max-width: 768px) {
-    .scrollable-wrapper {
+    .scrollable-cards.centered {
+        justify-content: flex-start;
+        overflow-x: auto;
         padding: 0 1rem;
     }
     .scroll-btn {
@@ -648,4 +657,167 @@ html[data-theme="dark"] .logo img {
         height: 28px;
         font-size: 1rem;
     }
+}
+
+
+/* ===============================
+   IMPROVED MOBILE HEADER & NAVBAR
+   =============================== */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .header-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .header-info h2 {
+        font-size: 0.9rem;
+    }
+
+    .header-actions {
+        align-items: center;
+        gap: 5px;
+    }
+
+    .logo img {
+        height: 50px;
+    }
+
+    .nav-bar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .nav-left, .nav-right {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 6px;
+    }
+
+    .nav-link, .nav-button {
+        padding: 6px 12px;
+        font-size: 0.95rem;
+    }
+}
+
+/* Prevent overlap and maintain clean spacing */
+@media (max-width: 480px) {
+    .header-info h1 {
+        font-size: 1.3rem;
+    }
+
+    .header-info h2 {
+        font-size: 0.8rem;
+    }
+
+    .btn, .nav-link, .nav-button {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+
+    .candidate-card {
+        height: auto;
+    }
+
+    .candidate-photo {
+        height: auto;
+        max-height: 220px;
+    }
+}
+
+
+
+/* ===============================
+   FULL RESPONSIVE ENHANCEMENTS
+   =============================== */
+
+/* General Typography Scaling */
+html {
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+/* Responsive Flex/Grid Refinements */
+.stats, .candidates-container, .scrollable-cards {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Candidate Card Height Fix for Shorter Screens */
+@media (max-width: 480px) {
+    .candidate-card {
+        height: auto;
+        padding: 0.8rem;
+    }
+
+    .candidate-photo {
+        max-height: 200px;
+        height: auto;
+    }
+
+    .card-front, .card-back {
+        padding: 6px;
+    }
+}
+
+/* Responsive Buttons */
+.btn,
+.vote-btn,
+.apply-btn,
+.audio-btn {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+}
+
+/* Manifesto Read More Button Responsiveness */
+.toggle-manifesto {
+    font-size: 0.8rem;
+    right: 0.8rem;
+}
+
+/* Scroll Buttons Smaller on Mobile */
+@media (max-width: 480px) {
+    .scroll-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Responsive Alert Boxes */
+.alert {
+    width: 90%;
+    font-size: 0.9rem;
+}
+
+/* Responsive Progress Bars */
+.progress-container {
+    width: 90%;
+    height: 8px;
+}
+
+/* Ensure Safe Padding on Very Small Devices */
+body, .header, .stats, .nav-bar {
+    box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }

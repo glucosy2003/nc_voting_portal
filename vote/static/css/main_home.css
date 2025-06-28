@@ -1,0 +1,209 @@
+/* ===============================
+   ROOT THEME VARIABLES - LIGHT MODE
+   =============================== */
+:root {
+    --primary: #f97316;
+    --background: linear-gradient(to right, #fffefd, #fff);
+    --text: #1f2937;
+    --card-bg: #fff;
+    --danger: #ef4444;
+    --success: #10b981;
+    --footer-bg: #d7d1d1;
+    --footer-text: #444;
+    --btn-login: #6e4508;
+    --btn-register: #81dd92;
+    --portal-header: #896733;
+}
+
+/* ===============================
+   DARK MODE OVERRIDES
+   =============================== */
+[data-theme="dark"] {
+    --background: linear-gradient(to right, #121212, #1e1e1e);
+    --text: #42444e;
+    --card-bg: #1f2937;
+    --footer-bg: #d7d1d1;
+    --footer-text: #ccc;
+    --btn-login: #6e4508;
+    --btn-register: #81dd92;
+    --portal-header: #d9a24f;
+}
+
+/* ===============================
+   GENERAL STYLES USING VARIABLES
+   =============================== */
+body {
+    background: var(--background);
+    color: var(--text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.portal-header {
+    color: var(--portal-header);
+}
+
+.btn-login {
+    background-color: var(--btn-login);
+    color: #fff;
+}
+
+.btn-register {
+    background-color: var(--btn-register);
+    color: #fff;
+}
+
+.card, .about-card, .candidate-card {
+    background-color: var(--card-bg);
+    color: var(--text);
+}
+
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-switch input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+}
+
+
+/* ===============================
+   HOME PAGE LAYOUT IMPROVEMENTS
+   =============================== */
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Center content properly */
+main {
+    flex-grow: 1;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Header adjustments */
+.header-info h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+}
+
+.header-info h2 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0;
+}
+
+/* Welcome message */
+.portal-header {
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.portal-subtitle {
+    font-size: 1.2rem;
+    max-width: 700px;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Button styling */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.btn-login,
+.btn-register {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-login:hover,
+.btn-register:hover {
+    filter: brightness(1.1);
+    cursor: pointer;
+}
+
+/* Footer */
+.footer {
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+/* ===============================
+   RESPONSIVE ADJUSTMENTS
+   =============================== */
+@media (max-width: 768px) {
+    .portal-header {
+        font-size: 1.8rem;
+    }
+
+    .portal-subtitle {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+
+    .header-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .header-info h2 {
+        font-size: 1rem;
+    }
+
+    .btn-login,
+    .btn-register {
+        font-size: 0.95rem;
+        padding: 0.65rem 1.2rem;
+    }
+
+    .nav-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+
+    .nav-left,
+    .nav-right {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+/* ===============================
+   HOME HERO SECTION POSITIONING
+   =============================== */
+.home-hero {
+    margin-top: 0.1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+}
+
+@media (max-width: 768px) {
+    .home-hero {
+        margin-top: 2.5rem;
+    }
+}

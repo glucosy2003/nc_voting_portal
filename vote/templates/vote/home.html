@@ -1,4 +1,4 @@
-{% load static %} 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -9,53 +9,57 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/theme.css' %}" />
-    <script defer src="{% static 'js/theme.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{% static 'css/main_home.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main_theme.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/vote_dashboard.css' %}" />
 
-
+    <!-- Theme & Scripts -->
+    <script defer src="{% static 'js/main_theme.js' %}"></script>
 </head>
 <body>
-  <div class="page-wrapper d-flex flex-column min-vh-100">
+<div class="page-wrapper d-flex flex-column min-vh-100">
     <header class="header">
         <div class="logo">
-            <img src="{% static 'images/daeyang.logo.png' %}" alt="Daeyang University Logo" />
+            <img src="{% static 'images/logo_daeyang.png' %}" alt="Daeyang University Logo" />
         </div>
         <div class="header-info">
             <h1>NC Voting Portal</h1>
-          
-            
+            <h2>Students Council Elections</h2>
         </div>
         <div class="header-actions">
-            <label class="theme-switch"> <input type="checkbox" id="themeToggle" onchange="toggleTheme()"> Dark Mode</label>
+            <label class="theme-switch">
+                <input type="checkbox" id="themeToggle" onchange="toggleTheme()" />
+                Dark Mode
+            </label>
         </div>
     </header>
 
-    <nav class="nav-bar" id="navbar">    
+    <nav class="nav-bar sticky-top" id="navbar">
         <div class="nav-left">
             <a href="{% url 'home' %}" class="nav-link">Home</a>
             <a href="{% url 'about' %}" class="nav-link">About</a>
             <a href="{% url 'help_page' %}" class="nav-link">Help</a>
-
         </div>
     </nav>
-    <div class="container text-center mt-5">
-        <h1 class="portal-header">Welcome to NC Voting Portal</h1>
-        <p class="portal-subtitle">Empowering Daeyang University Nursing Students Through Technology</p>
+<main class="home-hero text-center">
+    <h1 class="portal-header mb-3">Welcome to NC Voting Portal</h1>
+    <p class="portal-subtitle mb-4">Empowering Daeyang University Nursing Students Through Technology</p>
 
-        <div class="button-group d-flex justify-content-center flex-wrap">
-            <a href="{% url 'login' %}" class="btn btn-login btn-lg me-3 mb-3">Login to Vote</a>
-            <a href="{% url 'voter_register' %}" class="btn btn-register btn-lg mb-3">Register to Vote</a>
-        </div>
+    <div class="button-group d-flex flex-wrap justify-content-center gap-3">
+        <a href="{% url 'login' %}" class="btn btn-login btn-lg">Login to Vote</a>
+        <a href="{% url 'voter_register' %}" class="btn btn-register btn-lg">Register to Vote</a>
     </div>
+</main>
 
-    <!-- Footer -->
-    <footer class="footer mt-auto">     
-        <div class="container text-center">
-            <p>© 2025 NC Voting Portal | Powered by Daeyang University Nursing Students</p>
+
+
+
+    <footer class="footer mt-auto bg-light text-center py-3">
+        <div class="container">
+            <p class="mb-0">© 2025 NC Voting Portal | Powered by Daeyang University Students</p>
         </div>
     </footer>
+</div>
 </body>
 </html>
