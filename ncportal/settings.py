@@ -2,6 +2,7 @@ from pathlib import Path
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import dj_database_url
 import os
 from dotenv import load_dotenv
 
@@ -69,12 +70,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ncportal.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+USE_LOCAL_DB = os.environ.get("USE_LOCAL_DB", "") == "True"
+
+if USE_LOCAL_DB:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
