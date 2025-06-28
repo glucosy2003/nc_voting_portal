@@ -60,8 +60,10 @@ class Candidate(models.Model):
 
     # ✅ FIXED FIELD:
     photo = CloudinaryField(
-        resource_type='image',
-        verbose_name="Candidate Photo"
+    verbose_name="Candidate Photo",
+    folder="candidate_photos",  # optional, helps organize uploads
+    blank=True,
+    null=True
     )
 
     approved = models.BooleanField(null=True, default=None, verbose_name="Approval Status")
