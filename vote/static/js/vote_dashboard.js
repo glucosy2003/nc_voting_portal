@@ -188,3 +188,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+
+
+// Toggle mobile nav visibility
+document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = document.getElementById("hamburger-btn");
+    const navLinks = document.getElementById("nav-links");
+
+    hamburger.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+    });
+});
+
+// Reveal animations for scroll-reveal elements
+const revealOnScroll = () => {
+  const reveals = document.querySelectorAll('.scroll-reveal');
+  reveals.forEach(el => {
+    const windowHeight = window.innerHeight;
+    const elementTop = el.getBoundingClientRect().top;
+    if (elementTop < windowHeight - 50) {
+      el.style.opacity = 1;
+      el.style.transform = "translateY(0)";
+    }
+  });
+};
+
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);

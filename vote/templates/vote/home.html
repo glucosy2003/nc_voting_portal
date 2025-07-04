@@ -16,35 +16,56 @@
 
     <!-- Theme & Scripts -->
     <script defer src="{% static 'js/main_theme.js' %}"></script>
+    <script defer src="{% static 'js/vote_dashboard.js' %}"></script>
 </head>
 <body>
-<div class="page-wrapper d-flex flex-column min-vh-100">
-    <header class="header">
-        <div class="logo">
+<header class="header">
+    <div class="logo">        
+        <a href="#" onclick="window.scrollTo(0, 0); setTimeout(() => location.reload(), 100); return false;">
             <img src="{% static 'images/logo_daeyang.png' %}" alt="Daeyang University Logo" />
-        </div>
-        <div class="header-info">
-            <h1>NC Voting Portal</h1>
-            <h2>Students Council Elections</h2>
-        </div>
-        <div class="header-actions">
-            <label class="theme-switch">
-                <input type="checkbox" id="themeToggle" onchange="toggleTheme()" />
-                Dark Mode
-            </label>
-        </div>
-    </header>
+        </a>
+    </div>
+    <div class="header-info">
+        <h1>NC Voting Portal</h1>
+    </div>
+    <div class="header-actions">
+        <label class="theme-switch">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme()"> Dark
+        </label>
+    </div>
+</header>
 
-    <nav class="nav-bar sticky-top" id="navbar">
+<audio id="votingSong" loop>
+    <source src="{% static 'audio/portal_song.mp3' %}" type="audio/mpeg">
+</audio>
+<!-- ===== MARQUEE LINE ===== -->
+<div class="election-marquee">
+  <div class="marquee-inner">
+    <span>2025 Daeyang Students Council Elections</span>
+  </div>
+</div>
+
+<nav class="nav-bar" id="navbar">  
+    <!-- 🌐 Hamburger Button (only on small screens) -->
+    <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu">
+        ☰
+    </button>
+
+    <!-- 🔗 Nav Links (left & right groups) -->
+    <div class="nav-links" id="nav-links">
         <div class="nav-left">
             <a href="{% url 'home' %}" class="nav-link">Home</a>
             <a href="{% url 'about' %}" class="nav-link">About</a>
             <a href="{% url 'help_page' %}" class="nav-link">Help</a>
         </div>
-    </nav>
+    </div>
+</nav>
+
 <main class="home-hero text-center">
     <h1 class="portal-header mb-3">Welcome to NC Voting Portal</h1>
-    <p class="portal-subtitle mb-4">Empowering Daeyang University Nursing Students Through Technology</p>
+    <p style="text-align:center; font-style:italic; margin-top:1rem;">
+                “Empowering Daeyang Nursing Students through TECHNOLOGY.”<br>
+            </p>
 
     <div class="button-group d-flex flex-wrap justify-content-center gap-3">
         <a href="{% url 'login' %}" class="btn btn-login btn-lg">Login to Vote</a>
@@ -52,14 +73,12 @@
     </div>
 </main>
 
-
-
-
-    <footer class="footer mt-auto bg-light text-center py-3">
-        <div class="container">
-            <p class="mb-0">© 2025 NC Voting Portal | Powered by Daeyang University Students</p>
-        </div>
-    </footer>
 </div>
+
+
+<footer class="site-footer">
+  <p>© 2025 Daeyang University NC Voting Portal. All rights reserved.</p>
+</footer>
+
 </body>
 </html>

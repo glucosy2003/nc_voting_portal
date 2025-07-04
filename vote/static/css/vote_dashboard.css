@@ -8,7 +8,16 @@ body {
     background-color: var(--background);
     color: var(--text);
     transition: background-color 0.3s, color 0.3s;
+    box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
+body, .header, .stats, .nav-bar {
+    box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
 
 /* ===============================
    HEADER STYLING
@@ -18,10 +27,28 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
+    padding: 1rem 2rem; /* internal horizontal padding */
     background-color: var(--card-bg);
     border-bottom: 2px solid var(--primary);
+    margin: 0;
+    width: 100%; /* ✅ use 100% instead of 100vw */
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+ /* ===============================
+   MAKE HEADER STICKY ON SCROLL
+   =============================== */
+
+/* Optional: Smooth transition if theme or color changes */
+.header,
+.header * {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
 
 .logo img {
     height: 60px;
@@ -36,7 +63,7 @@ html[data-theme="dark"] .logo img {
 
 .header-info h1 {
     margin: 0;
-    font-size: 2.0rem;
+    font-size: 2rem;
     color: #b06a55;
 }
 
@@ -79,20 +106,73 @@ html[data-theme="dark"] .logo img {
     font-size: 0.9rem;
 }
 
-/* ===============================
-   STATS + RESULTS DISPLAY
+/* ===============================  
+   FINAL STATS BOX - RESPONSIVE 4-IN-1 ROW ON LARGE SCREENS
    =============================== */
-.stats {
-    padding: 1rem;
+.stats-box {
     background-color: var(--card-bg);
-    margin: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
+    padding: 1rem 1.2rem;
+    margin: 1.5rem auto;
+    border-radius: 14px;
+    max-width: 960px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    animation: fadeSlideUp 0.6s ease both;
+    box-sizing: border-box;
 }
+
+.stats-title {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    color: var(--primary);
+    position: relative;
+}
+
+.stats-title::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 3px;
+    margin: 6px auto 0;
+    background-color: var(--primary);
+    border-radius: 2px;
+}
+
+/* ✅ 4-column layout default for large screens */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+/* Stat item styles */
+.stats p {
+    background-color: #f4f4f4;
+    border-left: 4px solid var(--primary);
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin: 0;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.stats p:hover {
+    transform: translateY(-2px);
+}
+
+/* 🌙 Dark Mode */
+html[data-theme="dark"] .stats p {
+    background-color: #1f2937;
+    color: var(--text);
+    border-left-color: var(--primary);
+}
+
 
 .position-title {
     text-align: center;
@@ -106,11 +186,26 @@ html[data-theme="dark"] .logo img {
    =============================== */
 .candidates-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: row;
+    overflow-x: auto;
     gap: 1rem;
-    padding: 1rem;
+    padding: 1rem 0;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
 }
+
+.candidates-container::-webkit-scrollbar {
+    display: none;
+}
+
+.candidate-card {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: 260px;
+    max-width: 90vw;
+}
+
 
 
 .candidate-card {
@@ -123,13 +218,7 @@ html[data-theme="dark"] .logo img {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: transform 0.3s;
     position: relative;
-    height: 330px;
-}
-.candidate-card {
-    flex: 0 0 auto;
-    min-width: 240px;
-    max-width: 280px;
-    width: 100%;
+    height: 400px;
 }
 
 
@@ -163,6 +252,7 @@ html[data-theme="dark"] .logo img {
 .card-inner.flipped {
     transform: rotateY(180deg);
 }
+
 
 /* ===============================
    CANDIDATE PHOTO
@@ -330,15 +420,114 @@ html[data-theme="dark"] .logo img {
     .stats {
         flex-direction: column;
     }
-    .candidates-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .candidate-card {
-        width: 90%;
-        margin-bottom: 1rem;
+}
+
+/* hide scroll btn */
+@media (max-width: 768px) {
+    .scroll-btn {
+        display: none;
     }
 }
+
+/* cards/photo  */
+@media (max-width: 480px) {
+  /* 📱 Mobile-only: reduce card size and fix photo */
+  .candidate-card {
+    width: 220px;        /* Smaller width on mobile */
+    height: auto;        /* Let content size it naturally */
+    padding: 0.8rem;
+  }
+
+  .candidate-photo {
+    height: 160px;       /* Smaller photo height */
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .card-front h4 {
+    font-size: 1rem;     /* Optional: smaller name font */
+  }
+
+  .btn.vote-btn {
+    padding: 6px 10px;   /* Optional: smaller vote button */
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* ======================================
+     MOBILE: Make manifesto scrollable
+     ====================================== */
+  .manifesto-container {
+    max-height: 180px;       /* ↑ Allow more room for text */
+    overflow-y: auto;        /* ⚙️ Enable vertical scrolling */
+    padding-right: 4px;      /* ↴ Space for scrollbar */
+  }
+
+
+  /* Make the "See more" button stick at bottom if you like */
+  .manifesto-container.expanded {
+    position: relative;      /* ensure relative positioning */
+  }
+  .toggle-manifesto {
+    position: absolute;
+    bottom: 4px;
+    right: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* 📌 Ensure .card-inner and .card-back take full space */
+  .card-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-back {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* 📜 Make manifesto scrollable ONLY */
+  .manifesto-container {
+    max-height: 150px;              /* control how tall it is */
+    overflow-y: auto;               /* only vertical scroll */
+    padding-right: 4px;
+    position: relative;
+    flex-grow: 1;                   /* take vertical space */
+  }
+
+  .manifesto-container .fade-overlay {
+    display: none;
+  }
+
+}
+
+/* ✅ Ensure card content does NOT scroll vertically */
+.candidate-card {
+  overflow: hidden;              /* block internal scrolling */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ✅ Keep manifesto scroll isolated (already added) */
+.manifesto-container {
+  overflow-y: auto;
+  max-height: 140px;             /* adjust if needed */
+}
+
+/* ✅ Scrollable cards must not scroll vertically */
+.scrollable-cards {
+  overflow-y: hidden !important; /* block vertical scrolling */
+  overflow-x: auto;              /* only horizontal scroll allowed */
+  display: flex;
+}
+
+
 
 @media (max-width: 600px) {
     .nav-bar {
@@ -664,30 +853,6 @@ html[data-theme="dark"] .logo img {
    IMPROVED MOBILE HEADER & NAVBAR
    =============================== */
 @media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 0.5rem;
-    }
-
-    .header-info h1 {
-        font-size: 1.5rem;
-    }
-
-    .header-info h2 {
-        font-size: 0.9rem;
-    }
-
-    .header-actions {
-        align-items: center;
-        gap: 5px;
-    }
-
-    .logo img {
-        height: 50px;
-    }
-
     .nav-bar {
         flex-direction: column;
         align-items: center;
@@ -821,3 +986,209 @@ body, .header, .stats, .nav-bar {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    flex-wrap: nowrap;
+  }
+
+  .logo img {
+    height: 45px;
+  }
+
+  .header-info {
+    flex-grow: 1;
+    padding: 0 0.5rem;
+    text-align: center;
+  }
+
+  .header-info h1 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  .header-info h2 {
+    font-size: 0.75rem;
+    margin: 0;
+  }
+
+  .header-actions {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .theme-switch input {
+    transform: scale(0.9);
+  }
+}
+
+
+ /* ===============================
+   ELECTION MARQUEE LINE (scrolling text)
+   =============================== */
+.election-marquee {
+    width: 100%; /* force full width */
+    background-color: var(--card-bg);
+    border-top: 2px solid var(--primary);
+    border-bottom: 2px solid var(--primary);
+    overflow: hidden;
+    padding: 6px 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.marquee-inner {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scrollLeft 10s linear infinite;
+}
+
+.marquee-inner span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #b06a55;
+    padding-left: 100%;
+    display: inline-block;
+}
+
+/* 📱 Mobile friendly font size */
+@media (max-width: 480px) {
+    .marquee-inner span {
+        font-size: 0.85rem;
+    }
+}
+
+/* 🎞️ Keyframe for scrolling left */
+@keyframes scrollLeft {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+
+/* ===============================
+   DESKTOP NAV LINKS (default)
+   =============================== */
+.nav-links {
+  display: flex;                /* put links side by side */
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;                  /* fill the navbar width */
+}
+
+.nav-left,
+.nav-right {
+  display: flex;                /* ensure each group is horizontal */
+  align-items: center;
+  gap: 1rem;                    /* space between each link/button */
+}
+
+
+/* ===============================
+   RESPONSIVE NAVBAR + HAMBURGER
+   =============================== */
+.hamburger {
+    display: none;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    z-index: 1001;
+}
+
+
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+        margin-left: auto;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        display: none;
+        width: 100%;
+        margin-top: 0.5rem;
+        background-color: var(--card-bg);
+        padding: 0.5rem 1rem;
+        border-top: 1px solid var(--primary);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-left, .nav-right {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .nav-link, .nav-button {
+        width: 100%;
+        text-align: left;
+        padding: 8px 12px;
+    }
+}
+
+
+/* ===============================
+   NAV LINK ANIMATIONS — FIXED
+   =============================== */
+.nav-link, .nav-button {
+    position: relative;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 600;
+    padding: 5px 8px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block; /* important for underline animation */
+}
+
+.nav-link::after,
+.nav-button::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: 0;
+    background-color: #e67e22;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-button:hover::after {
+    width: 100%;
+}
+
+/* On click or active (optional) */
+.nav-link:focus::after,
+.nav-button:focus::after {
+    width: 100%;
+}
+
+/* On small screens ensure spacing & tap targets */
+@media (max-width: 768px) {
+    .nav-link, .nav-button {
+        padding: 8px 12px;
+        width: 100%;
+    }
+}
+

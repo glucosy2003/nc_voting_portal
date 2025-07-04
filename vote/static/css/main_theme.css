@@ -59,3 +59,29 @@ body {
     text-align: center;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+
+.site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  text-align: center;
+  padding: 0.8rem 0;
+  font-size: 0.9rem;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Light Theme */
+html[data-theme="light"] .site-footer {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+/* Dark Theme */
+html[data-theme="dark"] .site-footer {
+  background-color: #1c1c1c;
+  color: #eee;
+}

@@ -1,29 +1,36 @@
-from pathlib import Path 
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-import dj_database_url
+from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-
-# ✅ Cloudinary explicit configuration
-cloudinary.config(
-    cloud_name=os.environ.get('CLOUD_NAME'),
-    api_key=os.environ.get('CLOUD_API_KEY'),
-    api_secret=os.environ.get('CLOUD_API_SECRET'),
-)
-
+# ✅ Setup paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get('DEBUG') == 'True'
+# ✅ Load environment variables from .env
+load_dotenv(dotenv_path=BASE_DIR / ".env")
 
-ALLOWED_HOSTS = ['nc-voting-portal.onrender.com', 'localhost', '127.0.0.1']
+# ✅ Safe environment parsing
+def get_bool(value, default=False):
+    return str(value).strip().lower() in ("true", "1", "yes") if value is not None else default
 
-# Application definition
+# ✅ Load config values
+SECRET_KEY = os.environ.get("SECRET_KEY")
+DEBUG = get_bool(os.environ.get("DEBUG"))
+USE_LOCAL_DB = get_bool(os.environ.get("USE_LOCAL_DB"))
+
+# ✅ Cloudinary configuration (AFTER .env is loaded!)
+import cloudinary
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUD_NAME"),
+    api_key=os.environ.get("CLOUD_API_KEY"),
+    api_secret=os.environ.get("CLOUD_API_SECRET"),
+)
+
+
+# ✅ Required ALLOWED_HOSTS
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'nc-voting-portal.onrender.com']
+
+
+# ✅ Installed apps
 INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,9 +45,10 @@ INSTALLED_APPS = [
     'cloudinary_storage',
 ]
 
+# ✅ Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', 
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -49,6 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# ✅ URL and Templates
 ROOT_URLCONF = 'ncportal.urls'
 
 TEMPLATES = [
@@ -69,9 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ncportal.wsgi.application'
 
-# Database
-USE_LOCAL_DB = os.environ.get("USE_LOCAL_DB", "") == "True"
-
+# ✅ Databases (switch between local SQLite and Render PostgreSQL)
 if USE_LOCAL_DB:
     DATABASES = {
         'default': {
@@ -84,41 +91,30 @@ else:
         'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
 
-# Password validation
+# ✅ Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
+# ✅ Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Africa/Blantyre'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
+# ✅ Static files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'vote' / 'static',
-]
+STATICFILES_DIRS = [BASE_DIR / 'vote' / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files
+# ✅ Media (Cloudinary)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Cloudinary
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUD_API_KEY'),
@@ -126,8 +122,7 @@ CLOUDINARY_STORAGE = {
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# Login configuration
-LOGIN_URL = 'student_login'
+# ✅ Login
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/login/dashboard/'
 

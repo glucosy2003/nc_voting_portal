@@ -34,16 +34,6 @@
     <source src="{% static 'audio/voting_song.mp3' %}" type="audio/mpeg">
 </audio>
 
-
-<nav class="nav-bar" id="navbar">
-  <div class="nav-left">
-    <a href="javascript:history.back()" class="nav-link">← Back</a>
-  </div>
-  <label class="theme-switch">
-    <label class="theme-switch"> <input type="checkbox" id="themeToggle" onchange="toggleTheme()"> Dark Mode</label>
-  </label>
-</nav>
-
 <main class="results-main container">
   {% if voting_ended %}
     <p class="alert alert-success text-center">
