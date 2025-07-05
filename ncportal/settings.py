@@ -121,6 +121,7 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUD_API_KEY'),
     'API_SECRET': os.environ.get('CLOUD_API_SECRET'),
+    'SECURE': True,  # ✅ This forces HTTPS URLs
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
