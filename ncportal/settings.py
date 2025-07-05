@@ -1,8 +1,8 @@
-from pathlib import Path
+from pathlib import Path 
 import dj_database_url
-
 import os
 from dotenv import load_dotenv
+import cloudinary
 
 # ✅ Setup paths
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,22 +15,19 @@ def get_bool(value, default=False):
     return str(value).strip().lower() in ("true", "1", "yes") if value is not None else default
 
 # ✅ Load config values
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-dev-key")
 DEBUG = get_bool(os.environ.get("DEBUG"))
 USE_LOCAL_DB = get_bool(os.environ.get("USE_LOCAL_DB"))
 
-# ✅ Cloudinary configuration (AFTER .env is loaded!)
-import cloudinary
+# ✅ Cloudinary configuration
 cloudinary.config(
     cloud_name=os.environ.get("CLOUD_NAME"),
     api_key=os.environ.get("CLOUD_API_KEY"),
     api_secret=os.environ.get("CLOUD_API_SECRET"),
 )
 
-
-# ✅ Required ALLOWED_HOSTS
+# ✅ Hosts
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'nc-voting-portal.onrender.com']
-
 
 # ✅ Installed apps
 INSTALLED_APPS = [
@@ -59,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ✅ URL and Templates
+# ✅ URLs & Templates
 ROOT_URLCONF = 'ncportal.urls'
 
 TEMPLATES = [
@@ -80,7 +77,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ncportal.wsgi.application'
 
-# ✅ Databases (switch between local SQLite and Render PostgreSQL)
+# ✅ Database switch (local SQLite or Render PostgreSQL)
 if USE_LOCAL_DB:
     DATABASES = {
         'default': {
@@ -121,28 +118,25 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUD_API_KEY'),
     'API_SECRET': os.environ.get('CLOUD_API_SECRET'),
-    'SECURE': True,  # ✅ This forces HTTPS URLs
+    'SECURE': True,  # Ensures media URLs use HTTPS
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# ✅ Enforce HTTPS for all requests
-SECURE_SSL_REDIRECT = True
-
-# ✅ Prevent cookies from being sent over non-HTTPS
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-# ✅ Prevent browser from trying to guess content types
-SECURE_CONTENT_TYPE_NOSNIFF = True
-
-# ✅ Prevent your site from being displayed in an iframe (clickjacking protection)
-X_FRAME_OPTIONS = "DENY"
-
-# ✅ Enable HSTS (HTTP Strict Transport Security)
-SECURE_HSTS_SECONDS = 31536000  # 1 year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-
+# ✅ SECURITY SETTINGS (only apply in production)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = "DENY"
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+else:
+    # ✅ Safe for development (no HTTPS enforcement)
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
 
 # ✅ Login
 LOGIN_URL = '/login/'
