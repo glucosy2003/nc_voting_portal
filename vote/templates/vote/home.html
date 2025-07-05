@@ -39,11 +39,15 @@
     <source src="{% static 'audio/portal_song.mp3' %}" type="audio/mpeg">
 </audio>
 <!-- ===== MARQUEE LINE ===== -->
-<div class="election-marquee">
-  <div class="marquee-inner">
-    <span>2025 Daeyang Students Council Elections</span>
-  </div>
-</div>
+    <marquee scrollamount="3" behavior="scroll" direction="left" loop="infinite">
+       <span id="currentYear"></span> Daeyang Students Council Elections
+    </marquee>
+
+   <script>
+     // Auto-update the year
+      document.getElementById("currentYear").textContent = new Date().getFullYear();
+    </script>
+
 
 <nav class="nav-bar" id="navbar">  
     <!-- 🌐 Hamburger Button (only on small screens) -->
@@ -76,9 +80,14 @@
 </div>
 
 
-<footer class="site-footer">
-  <p>© 2025 Daeyang University NC Voting Portal. All rights reserved.</p>
+<footer class="site-footer"> 
+  <p>© <span id="footerYear"></span> Daeyang University NC Voting Portal. All rights reserved.</p>
 </footer>
+
+<script>
+  document.getElementById("footerYear").textContent = new Date().getFullYear();
+</script>
+
 
 </body>
 </html>
