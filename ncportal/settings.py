@@ -125,6 +125,25 @@ CLOUDINARY_STORAGE = {
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+# ✅ Enforce HTTPS for all requests
+SECURE_SSL_REDIRECT = True
+
+# ✅ Prevent cookies from being sent over non-HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# ✅ Prevent browser from trying to guess content types
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# ✅ Prevent your site from being displayed in an iframe (clickjacking protection)
+X_FRAME_OPTIONS = "DENY"
+
+# ✅ Enable HSTS (HTTP Strict Transport Security)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+
 # ✅ Login
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/login/dashboard/'
