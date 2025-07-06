@@ -85,3 +85,20 @@ html[data-theme="dark"] .site-footer {
   background-color: #1c1c1c;
   color: #eee;
 }
+
+
+/* Text input and textarea dark mode */
+html[data-theme='dark'] input[type="text"],
+html[data-theme='dark'] input[type="email"],
+html[data-theme='dark'] input[type="password"],
+html[data-theme='dark'] textarea {
+  background-color: #1f2937;
+  color: #ffffff;
+  border: 1px solid #555;
+}
+
+/* Placeholder text color in dark mode */
+html[data-theme='dark'] input::placeholder,
+html[data-theme='dark'] textarea::placeholder {
+  color: #bbbbbb;
+}

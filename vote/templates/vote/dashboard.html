@@ -6,6 +6,8 @@
     <title>Voting Dashboard - NC Voting Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}" />
+
     <!-- Styles -->
     <link rel="stylesheet" href="{% static 'css/main_theme.css' %}" />
     <link rel="stylesheet" href="{% static 'css/vote_dashboard.css' %}" />
@@ -128,12 +130,27 @@
                   <h4>{{ c.valid_student.full_name }}</h4>
                   {% if c.photo %}
                     {% if c.photo.url|slice:":7" == "http://" %}
-                      <img src="https://{{ c.photo.url|slice:'7:' }}" alt="{{ c.valid_student.full_name }}'s Photo" class="candidate-photo" />
+                      <img 
+                        src="https://{{ c.photo.url|slice:'7:' }}?f_auto,q_auto,w_400"
+                        alt="{{ c.valid_student.full_name }}'s Photo"
+                        class="candidate-photo"
+                        loading="lazy"
+                      />
                     {% else %}
-                      <img src="{{ c.photo.url }}" alt="{{ c.valid_student.full_name }}'s Photo" class="candidate-photo" />
+                      <img 
+                        src="{{ c.photo.url }}?f_auto,q_auto,w_400"
+                        alt="{{ c.valid_student.full_name }}'s Photo"
+                        class="candidate-photo"
+                        loading="lazy"
+                      />
                     {% endif %}
                   {% else %}
-                    <img src="{% static 'images/default_candidate.png' %}" alt="Default Photo" class="candidate-photo" />
+                    <img 
+                        src="{% static 'images/default_candidate.png' %}"
+                        alt="Default Photo"
+                        class="candidate-photo"
+                        loading="lazy"
+                    />
                   {% endif %}
                 </div>
                 <div class="card-back">
