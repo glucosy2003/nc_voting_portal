@@ -22,10 +22,14 @@ urlpatterns = [
     path('valid-students/', views.list_valid_students, name='list_valid_students'),
     path('valid-students/add/', views.add_valid_student, name='add_valid_student'),
     path('valid-students/delete/<int:pk>/', views.delete_valid_student, name='delete_valid_student'),
+    path('students/<int:student_id>/edit/', views.edit_valid_student, name='edit_valid_student'),
+    path('students/', views.ValidStudent, name='valid_students'),
+
 
     path('change-password/', views.change_admin_password, name='change_admin_password'),
     path('countdown/', views.countdown_timer_control, name='countdown_timer_control'),
 
     path('clear-votes/', views.clear_votes, name='clear_votes'),
+
 
 ]

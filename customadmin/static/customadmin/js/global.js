@@ -17,3 +17,12 @@ window.onload = function () {
     if (toggle) toggle.checked = true;
   }
 };
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector(".edit-student-form");
+    form.addEventListener("submit", () => {
+        console.log("Submitting updated student data...");
+    });
+});
+

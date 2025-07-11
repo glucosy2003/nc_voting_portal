@@ -2,7 +2,9 @@
 <!-- Header -->
 <header class="header">
   <div class="logo">
-    <img src="{% static 'images/logo.png' %}" alt="Daeyang University Logo" />
+        <a href="#" onclick="window.scrollTo(0, 0); setTimeout(() => location.reload(), 100); return false;">
+          <img src="{% static 'images/logo.png' %}" alt="Daeyang University Logo" />
+        </a>
   </div>
   <div class="header-info">
     <h1>NC Voting Admin Portal</h1>
@@ -11,7 +13,7 @@
   <div class="header-actions">
     <label class="theme-switch">
       <input type="checkbox" id="themeToggle" onchange="toggleTheme()" />
-      <span>Dark Mode</span>
+      <span>Dark</span>
     </label>
   </div>
 </header>

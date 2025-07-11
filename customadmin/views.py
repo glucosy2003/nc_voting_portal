@@ -37,7 +37,8 @@ def admin_login(request):
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_staff:
-            login(request, user)
+            login(request, user) 
+            request.session.cycle_key()
             return redirect("customadmin:admin_dashboard")
         else:
             return render(request, "customadmin/login.html", {
@@ -277,6 +278,46 @@ def delete_valid_student(request, pk):
     return render(request, 'customadmin/valid_student_confirm_delete.html', {'student': student})
 
 
+@login_required
+@user_passes_test(is_admin)
+def edit_valid_student(request, student_id):
+    student = get_object_or_404(ValidStudent, id=student_id)
+    if request.method == 'POST':
+        form = ValidStudentForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Student details updated successfully.")
+            return redirect('customadmin:list_valid_students') 
+    else:
+        form = ValidStudentForm(instance=student)
+    
+    return render(request, 'customadmin/edit_student.html', {'form': form, 'student': student})
+
+@login_required
+@user_passes_test(is_admin)
+def valid_students(request):
+    search_query = request.GET.get('q', '')
+    filter_status = request.GET.get('status', '')
+
+    students = ValidStudent.objects.all()
+
+    if search_query:
+        students = students.filter(full_name__icontains=search_query)
+
+    if filter_status:
+        students = students.filter(status=filter_status)
+
+    # Group by program
+    grouped_students = defaultdict(list)
+    for student in students:
+        grouped_students[student.program].append(student)
+
+    # ✅ This is the key: returning a proper rendered HTML response
+    return render(request, 'customadmin/valid_students.html', {
+        'grouped_students': grouped_students,
+        'search_query': search_query,
+        'filter_status': filter_status
+    })
 @login_required
 @user_passes_test(is_admin)
 def change_admin_password(request):

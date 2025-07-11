@@ -42,18 +42,31 @@ INSTALLED_APPS = [
     'customadmin',
     'cloudinary',
     'cloudinary_storage',
+    'axes',
+    'csp',
 ]
 
 # ✅ Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    
+    'axes.middleware.AxesMiddleware',
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    
+]
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',                     # 🔐 Blocks brute-force attempts
+    'django.contrib.auth.backends.ModelBackend',     # ✅ Standard Django login
 ]
 
 # ✅ URLs & Templates
@@ -138,8 +151,49 @@ else:
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
 
+# ✅ Strong session and CSRF cookie hardening (apply in all environments)
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE = 60 * 60 * 2  # 2 hours
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# ✅ Extra security headers
+SECURE_BROWSER_XSS_FILTER = True          # Enables the X-XSS-Protection: 1; mode=block header
+SECURE_REFERRER_POLICY = 'same-origin'    # Controls Referer header to avoid leaking URLs
+
 # ✅ Login
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/login/dashboard/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# ✅ Use Argon2 for password hashing
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',  # fallback
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]
+
+
+# ✅ Axes config
+AXES_FAILURE_LIMIT = 5  # Lock after 5 failed attempts
+AXES_COOLOFF_TIME = 1  # Lock lasts 1 hour
+AXES_RESET_ON_SUCCESS = True
+
+
+
+# ✅ Content Security Policy (CSP)
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": ("'self'",),
+        "script-src": ("'self'", 'https://cdnjs.cloudflare.com'),
+        "style-src": ("'self'", 'https://fonts.googleapis.com'),
+        "img-src": ("'self'", 'data:', 'https://res.cloudinary.com'),
+        "font-src": ("'self'", 'https://fonts.gstatic.com'),
+        "connect-src": ("'self'",),
+        "frame-src": ("'none'",),
+    }
+}
+
