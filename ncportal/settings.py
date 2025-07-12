@@ -1,4 +1,4 @@
-from pathlib import Path 
+from pathlib import Path
 import dj_database_url
 import os
 from dotenv import load_dotenv
@@ -43,25 +43,23 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     'axes',
-    'csp',
+    # removed 'csp',
 ]
 
 # ✅ Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'csp.middleware.CSPMiddleware',
+    'ncportal.middleware.SimpleCSPMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    
+
     'axes.middleware.AxesMiddleware',
 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -83,6 +81,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Removed CSP context processors
+                # 'ncportal.context_processors.csp_nonce',  # remove this if it's related to CSP nonce
             ],
         },
     },
@@ -167,7 +167,6 @@ LOGIN_REDIRECT_URL = '/login/dashboard/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # ✅ Use Argon2 for password hashing
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
@@ -176,24 +175,7 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
-
 # ✅ Axes config
 AXES_FAILURE_LIMIT = 5  # Lock after 5 failed attempts
 AXES_COOLOFF_TIME = 1  # Lock lasts 1 hour
 AXES_RESET_ON_SUCCESS = True
-
-
-
-# ✅ Content Security Policy (CSP)
-CONTENT_SECURITY_POLICY = {
-    "DIRECTIVES": {
-        "default-src": ("'self'",),
-        "script-src": ("'self'", 'https://cdnjs.cloudflare.com'),
-        "style-src": ("'self'", 'https://fonts.googleapis.com'),
-        "img-src": ("'self'", 'data:', 'https://res.cloudinary.com'),
-        "font-src": ("'self'", 'https://fonts.gstatic.com'),
-        "connect-src": ("'self'",),
-        "frame-src": ("'none'",),
-    }
-}
-
