@@ -21,13 +21,15 @@ A secure, non complex web-based voting system designed for educational instituti
 
 ## 📖 Overview
 
-The **NC Voting Portal** is a Django-based web application that streamlines the electoral process for academic institutions. It eliminates paper-based voting by providing a digital, transparent, and secure voting platform.
+The **NC Voting Portal** is a Django-based web application that manages the electoral process for Daeyang University student representative council election. It eliminates paper-based voting by providing a digital, transparent, non complex and secure voting platform.
+The system is currently deployed on render.com free plan tier : https://nc-voting-portal.onrender.com/
+
 
 **Target Users:**
 - Students (Voters)
 - Election Administrators
 - Election Observers
-- System Managers
+- System Manager/developer
 
 ---
 
@@ -300,7 +302,7 @@ nc_voting_portal/
 
 ### System Manager
 - **Permissions**: Django superuser (full system access)
-- **Responsibilities**: User management, system configuration
+- **Responsibilities**: User management, system configuration and updates
 - **Access**: Django admin interface
 
 ---
