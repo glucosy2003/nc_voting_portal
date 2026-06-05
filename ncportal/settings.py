@@ -4,30 +4,32 @@ import os
 from dotenv import load_dotenv
 import cloudinary
 
-# ✅ Setup paths
+# ✅ Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ✅ Load environment variables from .env
+# ✅ Load .env if it exists (safe even if missing)
 load_dotenv(dotenv_path=BASE_DIR / ".env")
 
-# ✅ Safe environment parsing
+# ✅ Helper for boolean env values
 def get_bool(value, default=False):
     return str(value).strip().lower() in ("true", "1", "yes") if value is not None else default
 
-# ✅ Load config values
+# ✅ Core settings
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-dev-key")
-DEBUG = get_bool(os.environ.get("DEBUG"))
-USE_LOCAL_DB = get_bool(os.environ.get("USE_LOCAL_DB"))
+DEBUG = get_bool(os.environ.get("DEBUG"), True)  # default True for dev
 
-# ✅ Cloudinary configuration
+# ✅ Cloudinary config
 cloudinary.config(
     cloud_name=os.environ.get("CLOUD_NAME"),
     api_key=os.environ.get("CLOUD_API_KEY"),
     api_secret=os.environ.get("CLOUD_API_SECRET"),
 )
 
-# ✅ Hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'nc-voting-portal.onrender.com']
+# ✅ Allowed hosts
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['nc-voting-portal.onrender.com']
 
 # ✅ Installed apps
 INSTALLED_APPS = [
@@ -43,13 +45,13 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     'axes',
-    # removed 'csp',
 ]
 
 # ✅ Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,9 +63,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# ✅ Authentication
 AUTHENTICATION_BACKENDS = [
-    'axes.backends.AxesBackend',                     # 🔐 Blocks brute-force attempts
-    'django.contrib.auth.backends.ModelBackend',     # ✅ Standard Django login
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 # ✅ URLs & Templates
@@ -80,8 +83,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # Removed CSP context processors
-                # 'ncportal.context_processors.csp_nonce',  # remove this if it's related to CSP nonce
             ],
         },
     },
@@ -89,8 +90,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ncportal.wsgi.application'
 
-# ✅ Database switch (local SQLite or Render PostgreSQL)
-if USE_LOCAL_DB:
+# ✅ DATABASE (single switch using DEBUG)
+if DEBUG:
+    # 💻 Local development (SQLite)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -98,6 +100,7 @@ if USE_LOCAL_DB:
         }
     }
 else:
+    # 🌐 Production (Render PostgreSQL)
     DATABASES = {
         'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
@@ -130,12 +133,14 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUD_API_KEY'),
     'API_SECRET': os.environ.get('CLOUD_API_SECRET'),
-    'SECURE': True,  # Ensures media URLs use HTTPS
+    'SECURE': True,
 }
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# ✅ SECURITY SETTINGS (only apply in production)
+# ✅ SECURITY SETTINGS
 if not DEBUG:
+    # 🌐 Production security
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -144,37 +149,42 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
+    # 🔥 Required for Render (proxy HTTPS)
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 else:
-    # ✅ Safe for development (no HTTPS enforcement)
+    # 💻 Development (no HTTPS)
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
 
-# ✅ Strong session and CSRF cookie hardening (apply in all environments)
+# ✅ Session security (applies to both)
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_AGE = 60 * 60 * 2  # 2 hours
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # ✅ Extra security headers
-SECURE_BROWSER_XSS_FILTER = True          # Enables the X-XSS-Protection: 1; mode=block header
-SECURE_REFERRER_POLICY = 'same-origin'    # Controls Referer header to avoid leaking URLs
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_REFERRER_POLICY = 'same-origin'
 
 # ✅ Login
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/login/dashboard/'
 
+# ✅ Default primary key
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ✅ Use Argon2 for password hashing
+# ✅ Password hashing
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',  # fallback
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
 # ✅ Axes config
-AXES_FAILURE_LIMIT = 5  # Lock after 5 failed attempts
-AXES_COOLOFF_TIME = 1  # Lock lasts 1 hour
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 1  # hours
 AXES_RESET_ON_SUCCESS = True
