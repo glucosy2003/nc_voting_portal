@@ -231,7 +231,7 @@ nc_voting_portal/
 - Enter your **Student ID** and **Voter ID**
 - Click **Login**
 
-### 3. Apply for Candidate (if willing to be a candidate)
+#### 3. Apply for Candidate (if willing to be a candidate)
 - log in
 - Click on “Apply to be a Candidate” on the Voting Dashboard.
 - Fill and submit the form.
