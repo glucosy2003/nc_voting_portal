@@ -233,7 +233,7 @@ nc_voting_portal/
 
 #### 3. Apply for Candidate (if willing to be a candidate)
 - log in
-- Click on “Apply to be a Candidate” on the Voting Dashboard.
+- Click on “Apply for Candidate” on the Voting Dashboard.
 - Fill and submit the form.
 - Wait for approval.
 
