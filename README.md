@@ -231,13 +231,21 @@ nc_voting_portal/
 - Enter your **Student ID** and **Voter ID**
 - Click **Login**
 
-#### 3. Vote
+### 3. Apply for Candidate (if willing to be a candidate)
+- log in
+- Click on “Apply to be a Candidate” on the Voting Dashboard.
+- Fill and submit the form.
+- Wait for approval.
+
+
+
+#### 4. Vote
 - On the **Voting Dashboard**, you'll see all available positions
 - Select your preferred candidate for each position
 - Click **Vote** to confirm
 - A confirmation message will appear
 
-#### 4. View Results
+#### 5. View Results
 - Go to **Results** to see live voting statistics
 - View vote counts and percentages by position
 
